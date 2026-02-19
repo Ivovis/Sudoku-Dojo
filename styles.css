@@ -1,0 +1,88 @@
+/* Ensure consistent box model */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+#grid-container {
+  display: grid;
+  grid-template-columns: repeat(9, 50px);
+  grid-template-rows: repeat(9, 50px);
+  gap: 2px;
+  width: fit-content;
+  margin: 20px auto;
+  background-color: #000; /* helps thick borders pop */
+  padding: 4px;
+  border: 4px solid #000; /* strong outer frame */
+}
+
+/* Base cell */
+.cell {
+  background-color: #fff;
+  border: 1px solid #33ff00; /* cell borders*/
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* === Thick borders for 3x3 block separators === */
+
+/* Vertical thick borders: end of columns 3,6,9 (right side) */
+.cell:nth-child(3n) {
+  border-right: 3px solid #000000;
+}
+
+/* Vertical thick borders: start of columns 4,7 (left side, internal only) */
+.cell:nth-child(3n + 1):not(:first-child) {
+  border-left: 3px solid #000000;
+}
+
+/* Horizontal thick borders: bottom of rows 3,6,9 */
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54),
+.cell:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 3px solid #000;
+}
+
+/* === Add thick outer borders explicitly (fixes top-left and symmetry) === */
+
+/* Top row: thick top border */
+.cell:nth-child(-n + 9) {
+  border-top: 3px solid #000000;
+}
+
+/* First column: thick left border (including top-left cell) */
+.cell:nth-child(9n + 1) {
+  /* cells 1,10,19,28,37,46,55,64,73 */
+  border-left: 3px solid #000;
+}
+
+/* Optional: Bottom row thick bottom (for symmetry, though container border may cover) */
+.cell:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 3px solid #000; /* already have, but reinforces */
+}
+
+.cell:nth-child(n + 28):nth-child(-n + 36),
+.cell:nth-child(n + 55):nth-child(-n + 63) {
+  border-top: 3px solid #000000;
+}
+
+/* Optional: Last column thick right (reinforces) */
+.cell:nth-child(9n) {
+  /* cells 9,18,27,...,81 */
+  border-right: 3px solid #000;
+}
